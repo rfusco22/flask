@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prealca - Verificación</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <div class="logo">
+                <img src="/static/img/Logo Prealca Sin Fondo.png" alt="Prealca Logo">
+            </div>
+            <h2>Verificación de Código</h2>
+            <p class="verification-text">Hemos enviado un código de verificación a tu correo. Ingrésalo a continuación para activar tu cuenta.</p>
+            
+            <!-- Mensajes flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form action="/api/verify" method="POST">
+                <div class="input-group">
+                    <label for="codigo">Código de Verificación:</label>
+                    <input type="text" id="codigo" name="codigo" required>
+                </div>
+                <button type="submit" class="btn">VERIFICAR</button>
+                <p class="register-text">
+                    ¿No recibiste el código? 
+                    <form action="/api/resend_code" method="POST" style="display: inline;">
+                        <button type="submit" class="link-btn">Reenviar</button>
+                    </form>
+                </p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,745 @@
+/* Estilos generales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #f0f2f5;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  color: white;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+}
+
+.user-info {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-info img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.user-info h2 {
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.user-info p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 0;
+}
+
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.sidebar ul li a i {
+  margin-right: 10px;
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+  background-color: #34495e;
+}
+
+/* Contenido principal */
+.content {
+  flex: 1;
+  padding: 20px;
+  margin-left: 250px;
+  width: calc(100% - 250px);
+}
+
+/* Páginas */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+h3 {
+  color: #2c3e50;
+  margin: 30px 0 15px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Formularios */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="email"],
+input[type="password"],
+input[type="file"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* Información de diseño */
+.diseno-info-container {
+  background-color: #e8f4fd;
+  border: 1px solid #bee5eb;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 20px 0;
+}
+
+.diseno-info-container h4 {
+  color: #0c5460;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.diseno-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.diseno-detail-item {
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border-left: 4px solid #3498db;
+}
+
+.diseno-detail-item strong {
+  color: #2c3e50;
+}
+
+.diseno-warning {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  color: #856404;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.diseno-error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Tablas - CENTRADO COMPLETO */
+.table-container {
+  overflow-x: auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin: 15px auto;
+  max-width: 95%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+/* CENTRAR TODOS LOS ENCABEZADOS */
+table th {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+  vertical-align: middle;
+}
+
+/* CENTRAR TODAS LAS CELDAS */
+table td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+table tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Alertas */
+.alert {
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Wrapper para centrar las alertas */
+.alertas-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.alertas-wrapper .alertas-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Alertas de inventario */
+.alertas-container {
+  margin-bottom: 20px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.alertas-container:empty::after {
+  content: "No hay alertas actualmente.";
+  display: block;
+  padding: 15px;
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Estilos para alertas de diseños */
+.alertas-container .alerta-item {
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.alertas-container .alerta-crítico {
+  background-color: #f8d7da;
+  border-left: 4px solid #dc3545;
+}
+
+.alertas-container .alerta-bajo {
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.alertas-container .alerta-item h4 {
+  margin-bottom: 5px;
+  color: #333;
+  text-align: center;
+}
+
+.alertas-container .alerta-item p {
+  margin: 0;
+  font-size: 14px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.alerta-item {
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.alerta-critico {
+  background-color: #f8d7da;
+  border-left: 4px solid #dc3545;
+}
+
+.alerta-bajo {
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.alerta-item h4 {
+  margin-bottom: 5px;
+  color: #333;
+  text-align: center;
+}
+
+.alerta-item p {
+  margin: 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Botón para agregar item */
+.btn-add {
+  margin-bottom: 15px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Acciones en tablas - CENTRADAS */
+.action-btn {
+  background: none;
+  border: none;
+  color: #3498db;
+  cursor: pointer;
+  margin: 0 2px;
+  font-size: 16px;
+  display: inline-block;
+}
+
+.action-btn.edit {
+  color: #2ecc71;
+}
+
+.action-btn.delete {
+  color: #e74c3c;
+}
+
+/* Estado de inventario - CENTRADO */
+.estado-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.estado-normal {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.estado-bajo {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.estado-critico {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Threshold info text */
+.threshold-info {
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #555;
+  background-color: #f8f9fa;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border-left: 4px solid #3498db;
+}
+
+.threshold-info span {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 8px;
+  margin: 0 2px;
+}
+
+/* Nuevos estilos para la sección de diseños */
+.disenos-container {
+  margin-top: 30px;
+}
+
+.disenos-container .table-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+  margin: 0 auto;
+}
+
+.disenos-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+/* CENTRAR ENCABEZADOS DE DISEÑOS */
+.disenos-container table th {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+  vertical-align: middle;
+}
+
+/* CENTRAR CELDAS DE DISEÑOS */
+.disenos-container table td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.disenos-container table tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Estados para diseños - CENTRADOS */
+.estado-diseno {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.estado-disponible {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.estado-limitado {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.estado-agotado {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Columna de material limitante - CENTRADA */
+.material-limitante {
+  font-weight: 500;
+  color: #e74c3c;
+  font-size: 13px;
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+  }
+
+  .sidebar .user-info h2,
+  .sidebar .user-info p,
+  .sidebar ul li a span {
+    display: none;
+  }
+
+  .sidebar ul li a i {
+    margin-right: 0;
+  }
+
+  .content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full-width {
+    grid-column: span 1;
+  }
+
+  .disenos-container table {
+    font-size: 12px;
+  }
+
+  .disenos-container table th,
+  .disenos-container table td {
+    padding: 8px 10px;
+    text-align: center;
+  }
+
+  .table-container {
+    max-width: 100%;
+    margin: 15px 0;
+  }
+}
+
+/* Alertas compactas para diseños */
+.alertas-compactas {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.alerta-grupo {
+  margin: 0;
+  padding: 12px 15px;
+  border-bottom: 1px solid #e9ecef;
+  text-align: center;
+}
+
+.alerta-grupo:last-child {
+  border-bottom: none;
+}
+
+.alerta-grupo.alerta-critico {
+  background-color: #f8d7da;
+  border-left: 4px solid #dc3545;
+}
+
+.alerta-grupo.alerta-bajo {
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.alerta-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.alerta-header i {
+  font-size: 16px;
+}
+
+.alerta-grupo.alerta-critico .alerta-header i {
+  color: #dc3545;
+}
+
+.alerta-grupo.alerta-bajo .alerta-header i {
+  color: #ffc107;
+}
+
+.alerta-content {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #555;
+  text-align: center;
+}
+
+.material-limitante-info {
+  padding: 10px 15px;
+  background-color: #e7f3ff;
+  border-left: 4px solid #3498db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.material-limitante-info i {
+  color: #3498db;
+  font-size: 16px;
+}
+
+/* Scrollbar personalizado para las alertas */
+.alertas-compactas::-webkit-scrollbar,
+.alertas-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.alertas-compactas::-webkit-scrollbar-track,
+.alertas-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.alertas-compactas::-webkit-scrollbar-thumb,
+.alertas-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.alertas-compactas::-webkit-scrollbar-thumb:hover,
+.alertas-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* ESPECIFICACIONES ESPECIALES PARA COLUMNAS IMPORTANTES */
+
+/* Hacer que M³ Disponibles sea más prominente */
+.disenos-container table th:nth-child(2),
+.disenos-container table td:nth-child(2) {
+  font-weight: bold;
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+/* Centrar específicamente las columnas de acciones */
+table th:last-child,
+table td:last-child {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Centrar botones de acción dentro de las celdas */
+table td:last-child {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Asegurar que los badges estén centrados */
+.estado-badge,
+.estado-diseno {
+  margin: 0 auto;
+  display: inline-block;
+}
+
+/* Centrar números y valores importantes */
+table td {
+  font-weight: 500;
+}
+
+/* Centrar contenido de formularios también */
+.form-group {
+  text-align: left;
+}
+
+/* Pero centrar botones de formulario */
+.form-group.full-width button {
+  display: block;
+  margin: 0 auto;
+  width: auto;
+  padding: 12px 30px;
+}

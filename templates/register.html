@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prealca - Registro</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box register-box">
+            <div class="logo">
+                <img src="/static/img/Logo Prealca Sin Fondo.png" alt="Prealca Logo">
+            </div>
+            <h2>Registro</h2>
+            
+            <!-- Mensajes flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form action="/api/register" method="POST" enctype="multipart/form-data">
+                <div class="input-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div class="input-group">
+                    <label for="apellido">Apellido:</label>
+                    <input type="text" id="apellido" name="apellido" required>
+                </div>
+                <div class="input-group">
+                    <label for="cedula">Cédula:</label>
+                    <input type="text" id="cedula" name="cedula" required>
+                </div>
+                <div class="input-group">
+                    <label for="correo">Correo:</label>
+                    <input type="email" id="correo" name="correo" required>
+                </div>
+                <div class="input-group">
+                    <label for="contrasena">Contraseña:</label>
+                    <input type="password" id="contrasena" name="contrasena" required>
+                </div>
+                <div class="input-group">
+                    <label for="foto">Foto:</label>
+                    <input type="file" id="foto" name="foto" accept="image/*">
+                </div>
+                <div class="input-group">
+                    <label for="rol">Rol:</label>
+                    <select id="rol" name="rol" required>
+                        <option value="registro">Registro</option>
+                        <option value="administrador">Administrador</option>
+                        <option value="ensayo">Ensayo</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">REGISTRARSE</button>
+                <p class="register-text">¿Ya tienes cuenta? <a href="/">Inicia sesión</a></p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

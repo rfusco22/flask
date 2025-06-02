@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prealca - Panel Administrador</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="user-info">
+            <img id="user-photo" src="{{ usuario.foto if usuario and usuario.foto else '/static/img/user.png' }}" alt="Foto de {{ usuario.nombre if usuario else 'Usuario' }}">
+            <h2 id="user-name">{{ usuario.nombre }} {{ usuario.apellido }}</h2>
+            <p id="user-role">Administrador</p>
+        </div>
+        <ul>
+            <li><a href="#" data-page="despachos" class="active"><i class="fas fa-truck"></i> Despachos</a></li>
+            <li><a href="#" data-page="clientes"><i class="fas fa-users"></i> Clientes</a></li>
+            <li><a href="#" data-page="camiones"><i class="fas fa-truck-moving"></i> Camiones</a></li>
+            <li><a href="#" data-page="choferes"><i class="fas fa-id-card"></i> Choferes</a></li>
+            <li><a href="#" data-page="vendedores"><i class="fas fa-user-tie"></i> Vendedores</a></li>
+            <li><a href="#" data-page="mantenimiento"><i class="fas fa-tools"></i> Mantenimiento</a></li>
+            <li><a href="#" data-page="inventario"><i class="fas fa-boxes"></i> Inventario</a></li>
+            <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+        </ul>
+    </div>
+
+    <!-- Contenido -->
+    <div class="content">
+        <!-- Mensajes flash -->
+        <div id="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- Páginas -->
+        <div id="despachos" class="page active">
+            <h2>Registrar Despacho</h2>
+            <form action="/api/despachos" method="POST" class="form-grid">
+                <div class="form-group">
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" id="fecha" name="fecha" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="guia">N° Guía:</label>
+                    <input type="text" id="guia" name="guia" placeholder="ID de Guía" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="m3">M3:</label>
+                    <input type="number" id="m3" name="m3" placeholder="Ingrese los M3" step="0.01" min="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="diseno">Diseño:</label>
+                    <select id="diseno" name="diseno" required>
+                        <option value="">Seleccione diseño</option>
+                        <option value="180_5">180 kgf/cm² - 5"</option>
+                        <option value="180_7">180 kgf/cm² - 7"</option>
+                        <option value="210_5">210 kgf/cm² - 5"</option>
+                        <option value="210_7">210 kgf/cm² - 7"</option>
+                        <option value="250_5">250 kgf/cm² - 5"</option>
+                        <option value="250_7">250 kgf/cm² - 7"</option>
+                        <option value="280_5">280 kgf/cm² - 5"</option>
+                        <option value="280_7">280 kgf/cm² - 7"</option>
+                        <option value="310_5">310 kgf/cm² - 5"</option>
+                        <option value="310_7">310 kgf/cm² - 7"</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="cliente">Cliente:</label>
+                    <select id="cliente" name="cliente" required>
+                        <option value="">Seleccione cliente</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="chofer">Chofer:</label>
+                    <select id="chofer" name="chofer" required>
+                        <option value="">Seleccione chofer</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="vendedor">Vendedor:</label>
+                    <select id="vendedor" name="vendedor" required>
+                        <option value="">Seleccione vendedor</option>
+                    </select>
+                </div>
+                
+                <div class="form-group full-width">
+                    <button type="submit">Guardar</button>
+                </div>
+            </form>
+
+            <!-- Información de disponibilidad de diseños -->
+            <div id="diseno-info" class="diseno-info-container" style="display: none;">
+                <h4>Información del Diseño</h4>
+                <div id="diseno-details">
+                    <!-- Se llenará con JavaScript -->
+                </div>
+            </div>
+
+            <h3>Despachos Registrados</h3>
+            <div class="table-container">
+                <table id="despachos-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>N° Guía</th>
+                            <th>M3</th>
+                            <th>Diseño</th>
+                            <th>Cliente</th>
+                            <th>Chofer</th>
+                            <th>Vendedor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Se llenará con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Clientes -->
+        <div id="clientes" class="page">
+            <h2>Registrar Cliente</h2>
+            <form action="/api/clientes" method="POST" class="form-grid">
+                <div class="form-group">
+                    <label for="nombre_cliente">Nombre:</label>
+                    <input type="text" id="nombre_cliente" name="nombre" placeholder="Nombre del cliente" required>
+                </div>
+                <div class="form-group">
+                    <label for="direccion">Dirección:</label>
+                    <input type="text" id="direccion" name="direccion" placeholder="Dirección del cliente" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="text" id="telefono" name="telefono" placeholder="Teléfono del cliente" required>
+                </div>
+                <div class="form-group">
+                    <label for="documento">Documento:</label>
+                    <div class="documento-container" style="display: flex; gap: 8px;">
+                        <select id="tipo_documento" name="tipo_documento" style="width: 70px;">
+                            <option value="V">V</option>
+                            <option value="J">J</option>
+                        </select>
+                        <input type="text" id="documento" name="documento" placeholder="Número de documento" required style="flex: 1;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="vendedor_cliente">Vendedor:</label>
+                    <select id="vendedor_cliente" name="vendedor">
+                        <option value="">Seleccione vendedor</option>
+                    </select>
+                </div>
+                <div class="form-group full-width">
+                    <button type="submit">Registrar Cliente</button>
+                </div>
+            </form>
+
+            <h3>Clientes Registrados</h3>
+            <div class="table-container">
+                <table id="clientes-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Dirección</th>
+                            <th>Teléfono</th>
+                            <th>Documento</th>
+                            <th>Vendedor</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Se llenará con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Modal para agregar/editar cliente -->
+        <div id="cliente-form-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3 id="form-title-cliente">Editar Cliente</h3>
+                <form id="cliente-form" action="/api/clientes" method="POST" class="form-grid">
+                    <input type="hidden" id="cliente_id_edit" name="id">
+                    <div class="form-group">
+                        <label for="nombre_cliente_edit">Nombre:</label>
+                        <input type="text" id="nombre_cliente_edit" name="nombre" placeholder="Ingrese el nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="direccion_edit">Dirección:</label>
+                        <input type="text" id="direccion_edit" name="direccion" placeholder="Ingrese la dirección" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono_edit">Teléfono:</label>
+                        <input type="text" id="telefono_edit" name="telefono" placeholder="Ingrese el teléfono" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="documento_edit">Documento:</label>
+                        <div class="documento-container" style="display: flex; gap: 8px; align-items: center;">
+                            <select id="tipo_documento_edit" name="tipo_documento" style="width: 70px; height: 40px;">
+                                <option value="V">V</option>
+                                <option value="J">J</option>
+                            </select>
+                            <input type="text" id="documento_edit" name="documento" placeholder="Número de documento" required style="flex: 1; height: 40px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="vendedor_cliente_edit">Vendedor:</label>
+                        <select id="vendedor_cliente_edit" name="vendedor">
+                            <option value="">Seleccione vendedor</option>
+                            <!-- Se llenará con JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <button type="submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="camiones" class="page">
+            <h2>Registrar Camión</h2>
+            <form action="/api/camiones" method="POST" class="form-grid" enctype="multipart/form-data">
+                
+                <div class="form-group">
+                    <label for="marca_registro">Marca:</label>
+                    <input type="text" id="marca_registro" name="marca" placeholder="Ingrese la Marca" required>
+                </div>
+                <div class="form-group">
+                    <label for="modelo_registro">Modelo:</label>
+                    <input type="text" id="modelo_registro" name="modelo" placeholder="Ingrese el Modelo" required>
+                </div>
+                <div class="form-group">
+                    <label for="placa_registro">N° de Placa:</label>
+                    <input type="text" id="placa_registro" name="placa" placeholder="Ingrese el N° de Placa" required>
+                </div>
+                <div class="form-group">
+                    <label for="capacidad_registro">Capacidad Max de Carga:</label>
+                    <input type="number" id="capacidad_registro" name="capacidad" placeholder="Ingrese la Capacidad Max de Carga" required>
+                </div>
+                <div class="form-group">
+                    <label for="estado_registro">Estado:</label>
+                    <select id="estado_registro" name="estado" required>
+                        <option value="Activo">Activo</option>
+                        <option value="Mantenimiento">Mantenimiento</option>
+                    </select>
+                </div>
+                <div class="form-group full-width">
+                    <button type="submit">Guardar</button>
+                </div>
+            </form>
+
+            <h3>Camiones Registrados</h3>
+            <div class="table-container">
+                <table id="camiones-table">
+                    <thead>
+                        <tr>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Placa</th>
+                            <th>Capacidad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Se llenará con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="choferes" class="page">
+            <h2>Registrar Chofer</h2>
+            <form action="/api/choferes" method="POST" class="form-grid">
+                <div class="form-group">
+                    <label for="nombre_chofer">Nombre y Apellido:</label>
+                    <input type="text" id="nombre_chofer" name="nombre" placeholder="Nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="cedula_chofer">Cédula:</label>
+                    <input type="text" id="cedula_chofer" name="cedula" placeholder="Cédula" required>
+                </div>
+                <div class="form-group">
+                    <label for="licencia">Licencia:</label>
+                    <input type="text" id="licencia" name="licencia" placeholder="Ingrese el N° Licencia" required>
+                </div>
+                <div class="form-group">
+                    <label for="vencimientoLicencia">Vencimiento Licencia:</label>
+                    <input type="date" id="vencimientoLicencia" name="vencimientoLicencia" required>
+                </div>
+                <div class="form-group">
+                    <label for="certificadoMedico">Certificado Médico:</label>
+                    <input type="text" id="certificadoMedico" name="certificadoMedico" placeholder="Ingrese El N° del Certificado Médico" required>
+                </div>
+                <div class="form-group">
+                    <label for="vencimientoCertificado">Vencimiento Certificado:</label>
+                    <input type="date" id="vencimientoCertificado" name="vencimientoCertificado" required>
+                </div>
+                <div class="form-group full-width">
+                    <button type="submit">Guardar</button>
+                </div>
+            </form>
+
+            <h3>Choferes Registrados</h3>
+            <div class="table-container">
+                <table id="choferes-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Cédula</th>
+                            <th>Licencia</th>
+                            <th>Vencimiento Licencia</th>
+                            <th>Certificado Médico</th>
+                            <th>Vencimiento Certificado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Se llenará con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal para editar choferes -->
+        <div id="chofer-form-modal" class="modal">
+            <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="form-title-chofer">Editar Chofer</h3>
+            <form id="chofer-form" action="/api/choferes" method="POST" class="form-grid">
+                <input type="hidden" id="chofer_id_edit" name="id">
+                <div class="form-group">
+                <label for="nombre_chofer_edit">Nombre:</label>
+                <input type="text" id="nombre_chofer_edit" name="nombre" placeholder="Ingrese el nombre" required>
+                </div>
+                <div class="form-group">
+                <label for="cedula_chofer_edit">Cédula:</label>
+                <input type="text" id="cedula_chofer_edit" name="cedula" placeholder="Ingrese la cédula" required>
+                </div>
+                <div class="form-group">
+                <label for="licencia_edit">Licencia:</label>
+                <input type="text" id="licencia_edit" name="licencia" placeholder="Ingrese la licencia" required>
+                </div>
+                <div class="form-group">
+                <label for="vencimiento_licencia_edit">Vencimiento Licencia:</label>
+                <input type="date" id="vencimiento_licencia_edit" name="vencimientoLicencia" required>
+                </div>
+                <div class="form-group">
+                <label for="certificado_medico_edit">Certificado Médico:</label>
+                <input type="text" id="certificado_medico_edit" name="certificadoMedico">
+                </div>
+                <div class="form-group">
+                <label for="vencimiento_certificado_edit">Vencimiento Certificado:</label>
+                <input type="date" id="vencimiento_certificado_edit" name="vencimientoCertificado">
+                </div>
+                <div class="form-group full-width">
+                <button type="submit">Guardar</button>
+                </div>
+            </form>
+            </div>
+        </div>
+
+        <!-- Modificar la tabla de vendedores para incluir la columna de acciones -->
+        <div id="vendedores" class="page">
+            <h2>Registrar Vendedor</h2>
+            <form action="/api/vendedores" method="POST" class="form-grid">
+            <div class="form-group">
+                <label for="nombre_vendedor">Nombre y Apellido:</label>
+                <input type="text" id="nombre_vendedor" name="nombre" placeholder="Ingrese El Nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="cedula_vendedor">Cédula:</label>
+                <input type="text" id="cedula_vendedor" name="cedula" placeholder="Ingrese la Cedula" required>
+            </div>
+            <div class="form-group full-width">
+                <button type="submit">Guardar</button>
+            </div>
+            </form>
+        
+            <h3>Vendedores Registrados</h3>
+            <div class="table-container">
+            <table id="vendedores-table">
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Cédula</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Se llenará con JavaScript -->
+                </tbody>
+            </table>
+            </div>
+        </div>
+        
+        <!-- Agregar este modal justo antes del cierre del div.content (antes del modal de mensajes) -->
+        <div id="vendedor-form-modal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h3 id="form-title-vendedor">Editar Vendedor</h3>
+              <form id="vendedor-form" action="/api/vendedores" method="POST" class="form-grid">
+                <input type="hidden" id="vendedor_id_edit" name="id">
+                <div class="form-group">
+                  <label for="nombre_vendedor_edit">Nombre y Apellido:</label>
+                  <input type="text" id="nombre_vendedor_edit" name="nombre" placeholder="Ingrese El Nombre" required>
+                </div>
+                <div class="form-group">
+                  <label for="cedula_vendedor_edit">Cédula:</label>
+                  <input type="text" id="cedula_vendedor_edit" name="cedula" placeholder="Ingrese la Cedula" required>
+                </div>
+                <div class="form-group full-width">
+                  <button type="submit">Guardar</button>
+                </div>
+              </form>
+            </div>
+        </div>
+
+        <div id="mantenimiento" class="page">
+            <h2>Registrar Mantenimiento de Camión</h2>
+            <form action="/api/mantenimiento" method="POST" class="form-grid">
+                <div class="form-group">
+                    <label for="camion_id">Camión:</label>
+                    <select id="camion_id" name="camion" required>
+                        <option value="">Seleccione camión</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fecha_mantenimiento">Fecha:</label>
+                    <input type="date" id="fecha_mantenimiento" name="fecha" required>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" name="descripcion" placeholder="Detalles del mantenimiento" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="costo">Monto:</label>
+                    <input type="number" id="costo" name="costo" placeholder="Ingrese el Monto" required>
+                </div>
+                
+                <div class="form-group full-width">
+                    <button type="submit">Guardar</button>
+                </div>
+            </form>
+
+            <h3>Mantenimientos Registrados</h3>
+            <div class="table-container">
+                <table id="mantenimiento-table">
+                    <thead>
+                        <tr>
+                            <th>Camión</th>
+                            <th>Fecha</th>
+                            <th>Descripción</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Se llenará con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="inventario" class="page">
+            <!-- Agregar sección para alertas de diseños -->
+            <h2>Alertas de Diseños</h2>
+            <div class="alertas-wrapper">
+                <div id="alertas-disenos" class="alertas-container">
+                    <!-- Se llenará con JavaScript -->
+                </div>
+            </div>
+
+            <h2>Gestión de Inventario</h2>
+            <button id="add-item-btn" class="btn-add">Agregar Nuevo Item</button>
+            
+            <div id="item-form" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3 id="form-title">Agregar Item</h3>
+                    <form id="inventario-form" action="/api/inventario" method="POST">
+                        <input type="hidden" id="item_id" name="id">
+                        <div class="form-group">
+                            <label for="nombre_item">Material:</label>
+                            <select id="nombre_item" name="nombre" required>
+                                <option value="">Seleccione material</option>
+                                <option value="Cemento">Cemento (toneladas)</option>
+                                <option value="Arena">Arena (M3)</option>
+                                <option value="Piedra">Piedra (M3)</option>
+                                <option value="Aditivo">Aditivo (litro)</option>
+                                <option value="Fibra">Fibra (unidad)</option>
+                                <option value="Hydrofugo">Hydrofugo (saco)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cantidad">Cantidad:</label>
+                            <input type="number" id="cantidad" name="cantidad" required>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <button type="submit">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="inventario-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Cantidad</th>
+                            <th>Unidad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Se llenará con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Nueva sección de diseños de concreto -->
+            <h2>Inventario por Diseños de Concreto</h2>
+            <div class="disenos-container">
+                <p class="threshold-info">Estado: <span class="estado-disponible">Disponible</span> (>200m³), <span class="estado-limitado">Limitado</span> (1-200m³), <span class="estado-agotado">Agotado</span> (0m³)</p>
+                <div class="table-container">
+                    <table id="disenos-table">
+                        <thead>
+                            <tr>
+                                <th>Diseño</th>
+                                <th>M³ Disponibles</th>
+                                <th>Material Limitante</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Se llenará con JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Agregar este modal justo antes del cierre del div.content (antes del modal de mensajes) -->
+
+        <!-- Modal para editar/agregar camión -->
+        <div id="camion-form-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3 id="form-title-camion">Agregar Camión</h3>
+                <form id="camion-form" action="/api/camiones" method="POST" class="form-grid">
+                    <input type="hidden" id="camion_id_edit" name="id">
+                    <div class="form-group">
+                        <label for="marca_edit">Marca:</label>
+                        <input type="text" id="marca_edit" name="marca" placeholder="Ingrese la Marca" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modelo_edit">Modelo:</label>
+                        <input type="text" id="modelo_edit" name="modelo" placeholder="Ingrese el Modelo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="placa_edit">N° de Placa:</label>
+                        <input type="text" id="placa_edit" name="placa" placeholder="Ingrese el N° de Placa" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="capacidad_edit">Capacidad Max de Carga:</label>
+                        <input type="number" id="capacidad_edit" name="capacidad" placeholder="Ingrese la Capacidad Max de Carga" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado_edit">Estado:</label>
+                        <select id="estado_edit" name="estado" required>
+                            <option value="Activo">Activo</option>
+                            <option value="Mantenimiento">Mantenimiento</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <button type="submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mensajes -->
+    <div id="modal-mensaje" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="mensaje-texto"></p>
+            <button id="modal-close-btn">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        window.userInfo = {
+            id: "{{ usuario.id }}",
+            nombre: "{{ usuario.nombre }}",
+            apellido: "{{ usuario.apellido }}",
+            nombreCompleto: "{{ usuario.nombre }} {{ usuario.apellido }}",
+            rol: "{{ usuario.rol }}"
+        };
+    </script>
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

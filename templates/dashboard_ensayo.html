@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prealca - Panel Ensayo</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="user-info">
+            <img id="user-photo" src="{{ usuario.foto if usuario.foto else '/static/img/user.png' }}" alt="Foto de {{ usuario.nombre }}">
+            <h2 id="user-name">{{ usuario.nombre }} {{ usuario.apellido }}</h2>
+            <p id="user-role">Ensayo</p>
+        </div>
+        <ul>
+            <li><a href="#" data-page="inventario" class="active"><i class="fas fa-boxes"></i> Inventario</a></li>
+            <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+        </ul>
+    </div>
+
+    <!-- Contenido -->
+    <div class="content">
+        <!-- Mensajes flash -->
+        <div id="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+        </div>
+
+        <!-- Páginas -->
+        <div id="inventario" class="page active">
+            <h2>Alertas de Inventario</h2>
+            <div id="alertas-inventario" class="alertas-container">
+                <!-- Se llenará con JavaScript -->
+            </div>
+
+            <h2>Gestión de Inventario</h2>
+            <button id="add-item-btn" class="btn-add">Agregar Nuevo Item</button>
+            
+            <div id="item-form" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3 id="form-title">Agregar Item</h3>
+                    <form id="inventario-form" action="/api/inventario" method="POST">
+                        <input type="hidden" id="item_id" name="id">
+                        <div class="form-group">
+                            <label for="nombre_item">Material:</label>
+                            <select id="nombre_item" name="nombre" required>
+                                <option value="">Seleccione material</option>
+                                <option value="Cemento">Cemento (toneladas)</option>
+                                <option value="Arena">Arena (M3)</option>
+                                <option value="Piedra">Piedra (M3)</option>
+                                <option value="Aditivo">Aditivo (litro)</option>
+                                <option value="Fibra">Fibra (unidad)</option>
+                                <option value="Hydrofugo">Hydrofugo (saco)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cantidad">Cantidad:</label>
+                            <input type="number" id="cantidad" name="cantidad" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="minimo">Cantidad Mínima:</label>
+                            <input type="number" id="minimo" name="minimo" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <button type="submit">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="inventario-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Cantidad</th>
+                            <th>Unidad</th>
+                            <th>Mínimo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Se llenará con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mensajes -->
+    <div id="modal-mensaje" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="mensaje-texto"></p>
+            <button id="modal-close-btn">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        // Pasar datos del usuario al JavaScript
+        window.userInfo = {
+            id: "{{ usuario.id }}",
+            nombre: "{{ usuario.nombre }}",
+            apellido: "{{ usuario.apellido }}",
+            nombreCompleto: "{{ usuario.nombre }} {{ usuario.apellido }}",
+            rol: "{{ usuario.rol }}"
+        };
+    </script>
+    <script src="/static/js/dashboard_ensayo.js"></script>
+</body>
+</html>
